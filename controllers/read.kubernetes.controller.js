@@ -7,27 +7,8 @@ router.get('/:namespace', async (req, res, next) => {
   try {
     logger.debug(req.params.namespace)
 
-    const kc = new k8s.KubeConfig({
-      apiVersion: 'v1',
-      clusters: [
-        {
-          cluster: {
-            server: 'https://kubernetes.default.svc.cluster.local:443'
-          },
-          name: 'kubernetes'
-        }
-      ],
-      contexts: [
-        {
-          context: {
-            cluster: 'kubernetes',
-            user: 'kubernetes-admin'
-          },
-          name: 'kubernetes-admin@kubernetes'
-        }
-      ]
-    })
-    kc.loadFromCluster()
+    const kc = new k8s.KubeConfig()
+    kc.loadFromDefault()
 
     logger.debug('k8s.KubeConfig loaded')
 
