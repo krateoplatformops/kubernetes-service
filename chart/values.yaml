@@ -1,6 +1,6 @@
 registry:
   images:
-    git: ghcr.io/krateoplatformops/kubernetes-service:latest
+    kubernetes: ghcr.io/krateoplatformops/kubernetes-service:latest
 
 log:
   level: "info"

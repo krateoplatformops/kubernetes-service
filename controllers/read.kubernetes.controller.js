@@ -6,7 +6,7 @@ const k8s = require('@kubernetes/client-node')
 router.get('/:namespace', async (req, res, next) => {
   try {
     const kc = new k8s.KubeConfig()
-    kc.loadFromDefault()
+    kc.loadFromCluster()
 
     logger.debug('k8s.KubeConfig loaded')
     logger.debug(req.query.namespace)
