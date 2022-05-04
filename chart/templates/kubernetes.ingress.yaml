@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   name: kubernetes-ingress
   labels:
+    app: krateo.io
+    component: kubernetes
   annotations:
     kubernetes.io/ingress.class: 'kong'
 spec:

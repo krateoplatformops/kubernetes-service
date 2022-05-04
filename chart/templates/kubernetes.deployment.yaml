@@ -15,6 +15,7 @@ spec:
       labels:
         component: kubernetes
     spec:
+      serviceAccountName: krateo-kubernetes-service-account
       containers:
         - name: kubernetes
           image: {{ .Values.registry.images.kubernetes }}
