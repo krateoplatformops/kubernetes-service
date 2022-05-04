@@ -1,0 +1,9 @@
+registry:
+  images:
+    git: ghcr.io/krateoplatformops/kubernetes-service:latest
+
+log:
+  level: "info"
+
+kubernetes:
+  host: "kubernetes.krateo.site"
