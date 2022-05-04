@@ -5,11 +5,12 @@ const k8s = require('@kubernetes/client-node')
 
 router.get('/:namespace', async (req, res, next) => {
   try {
+    logger.debug(req.query.namespace)
+
     const kc = new k8s.KubeConfig()
     kc.loadFromCluster()
 
     logger.debug('k8s.KubeConfig loaded')
-    logger.debug(req.query.namespace)
 
     const k8sApi = kc.makeApiClient(k8s.CoreV1Api)
 
