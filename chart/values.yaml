@@ -3,7 +3,7 @@ registry:
     kubernetes: ghcr.io/krateoplatformops/kubernetes-service:latest
 
 log:
-  level: "debug"
+  level: "info"
 
 kubernetes:
   host: "kubernetes.krateo.site"
