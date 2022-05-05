@@ -1,0 +1,99 @@
+{
+  "resources": [
+    {
+      "kind": "pod",
+      "api": "api/v1/pods",
+      "icon": "pod"
+    },
+    {
+      "kind": "service",
+      "api": "api/v1/services",
+      "icon": "svc"
+    },
+    {
+      "kind": "ingress",
+      "api": "apis/networking.k8s.io/v1/ingresses",
+      "icon": "ing"
+    },
+    {
+      "kind": "secret",
+      "api": "api/v1/secrets",
+      "icon": "secret"
+    },
+    {
+      "kind": "configmap",
+      "api": "api/v1/configmaps",
+      "icon": "cm"
+    },
+    {
+      "kind": "deployment",
+      "api": "apis/apps/v1/deployments",
+      "icon": "deploy"
+    },
+    {
+      "kind": "statefulset",
+      "api": "apis/apps/v1/statefulsets",
+      "icon": "sts"
+    },
+    {
+      "kind": "daemonset",
+      "api": "apis/apps/v1/daemonsets",
+      "icon": "ds"
+    },
+    {
+      "kind": "job",
+      "api": "apis/batch/v1/jobs",
+      "icon": "job"
+    },
+    {
+      "kind": "cronjob",
+      "api": "apis/batch/v1beta1/cronjobs",
+      "icon": "cronjob"
+    },
+    {
+      "kind": "networkpolicy",
+      "api": "apis/networking.k8s.io/v1/networkpolicies",
+      "icon": "netpol"
+    },
+    {
+      "kind": "persistentvolumeclaim",
+      "api": "api/v1/persistentvolumeclaims",
+      "icon": "pvc"
+    },
+    {
+      "kind": "persistentvolume",
+      "api": "api/v1/persistentvolumes",
+      "icon": "pv"
+    },
+    {
+      "kind": "storageclass",
+      "api": "api/v1/storageclasses",
+      "icon": "sc"
+    },
+    {
+      "kind": "clusterrole",
+      "api": "rbac.authorization.k8s.io/v1/clusterroles",
+      "icon": "c-role"
+    },
+    {
+      "kind": "clusterrolebinding",
+      "api": "rbac.authorization.k8s.io/v1/clusterrolebindings",
+      "icon": "crb"
+    },
+    {
+      "kind": "role",
+      "api": "rbac.authorization.k8s.io/v1/roles",
+      "icon": "role"
+    },
+    {
+      "kind": "rolebinding",
+      "api": "rbac.authorization.k8s.io/v1/rolebindings",
+      "icon": "rb"
+    },
+    {
+      "kind": "customresourcedefinition",
+      "api": "apis/apiextensions.k8s.io/v1beta1/customresourcedefinitions",
+      "icon": "crd"
+    }
+  ]
+}

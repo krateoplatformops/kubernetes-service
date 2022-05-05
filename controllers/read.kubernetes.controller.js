@@ -4,8 +4,8 @@ const { logger } = require('../helpers/logger.helpers')
 const k8s = require('@kubernetes/client-node')
 const request = require('request')
 const yaml = require('js-yaml')
-const { k8sConstants } = require('../constants')
 const stringHelpers = require('../helpers/string.helpers')
+const fs = require('fs')
 
 router.get('/:selector', async (req, res, next) => {
   try {
@@ -18,10 +18,25 @@ router.get('/:selector', async (req, res, next) => {
     const opts = {}
     kc.applyToRequest(opts)
 
-    const response = {}
+    // load resources json file
+    const resJson = fs.readFileSync('resources.json')
+    let endpoints = JSON.parse(resJson).resources
+    // load crd json file
+    try {
+      const crdJson = fs.readFileSync('crd.json')
+      endpoints = endpoints.concat(JSON.parse(crdJson).resources)
+    } catch (err) {
+      logger.error(err)
+    }
+
+    logger.debug(JSON.stringify(endpoints))
+
+    const response = {
+      resources: []
+    }
 
     await Promise.all(
-      k8sConstants.resources.map(async (r) => {
+      endpoints.map(async (r) => {
         const data = await new Promise((resolve, reject) => {
           request(
             encodeURI(
@@ -36,17 +51,23 @@ router.get('/:selector', async (req, res, next) => {
             }
           )
         })
-        const payload = yaml.load(data)
 
         try {
+          const payload = yaml.load(data)
           if (payload.items && payload.items.length > 0) {
-            response[r.kind] = payload.items
+            response.resources.push({
+              kind: r.kind,
+              icon: r.icon,
+              items: payload.items
+            })
           }
         } catch (err) {
           logger.error(err)
         }
       })
     )
+
+    logger.debug(JSON.stringify(response))
 
     res.status(200).json(response)
   } catch (error) {
