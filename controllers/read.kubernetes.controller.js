@@ -67,6 +67,12 @@ router.get('/:selector', async (req, res, next) => {
       })
     )
 
+    response.resources = response.resources.sort((a, b) => {
+      if (a.kind < b.kind) return -1
+      if (a.kind > b.kind) return 1
+      return 0
+    })
+
     logger.debug(JSON.stringify(response))
 
     res.status(200).json(response)

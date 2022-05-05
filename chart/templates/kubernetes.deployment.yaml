@@ -14,6 +14,7 @@ spec:
     metadata:
       labels:
         component: kubernetes
+        app: krateo.io
     spec:
       serviceAccountName: krateo-kubernetes-service-account
       containers:
