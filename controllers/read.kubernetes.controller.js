@@ -7,6 +7,43 @@ const yaml = require('js-yaml')
 const stringHelpers = require('../helpers/string.helpers')
 const fs = require('fs')
 
+router.get('/pkgs', async (req, res, next) => {
+  try {
+    const kc = new k8s.KubeConfig()
+    kc.loadFromDefault()
+
+    const opts = {}
+    kc.applyToRequest(opts)
+
+    const response = {
+      pkgs: []
+    }
+
+    const pkgs = await new Promise((resolve, reject) => {
+      request(
+        encodeURI(
+          `${
+            kc.getCurrentCluster().server
+          }/apis/apiextensions.k8s.io/v1/customresourcedefinitions`
+        ),
+        opts,
+        (error, response, data) => {
+          if (error) reject(error)
+          else resolve(data)
+        }
+      )
+    })
+
+    response.pkgs = yaml.load(pkgs)
+
+    logger.debug(JSON.stringify(response))
+
+    res.status(200).json(response)
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.get('/:selector', async (req, res, next) => {
   try {
     const selector = stringHelpers.b64toAscii(req.params.selector)
