@@ -13,4 +13,4 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     namespace: {{ .Release.Namespace }}
-    name: {{ .Values.serviceAccount.name }}
+    name: {{ include "helm.serviceAccountName" . }}
