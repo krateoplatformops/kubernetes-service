@@ -6,8 +6,10 @@ const request = require('request')
 const yaml = require('js-yaml')
 const stringHelpers = require('../helpers/string.helpers')
 const fs = require('fs')
+const { packageConstants } = require('../constants')
+const { default: axios } = require('axios')
 
-router.get('/pkgs', async (req, res, next) => {
+router.get('/packages', async (req, res, next) => {
   try {
     const kc = new k8s.KubeConfig()
     kc.loadFromDefault()
@@ -15,26 +17,106 @@ router.get('/pkgs', async (req, res, next) => {
     const opts = {}
     kc.applyToRequest(opts)
 
+    // PROVIDERS        /apis/pkg.crossplane.io/v1/providers
+    // CONFIGURATIONS   /apis/pkg.crossplane.io/v1/configurations
+
+    const list = [
+      { key: 'packages', api: '/apis/pkg.crossplane.io/v1/providers' },
+      {
+        key: 'configurations',
+        api: '/apis/pkg.crossplane.io/v1/configurations'
+      }
+    ]
+
     const response = {
-      pkgs: []
+      items: []
     }
 
-    const pkgs = await new Promise((resolve, reject) => {
-      request(
-        encodeURI(
-          `${
-            kc.getCurrentCluster().server
-          }/apis/apiextensions.k8s.io/v1/customresourcedefinitions`
-        ),
-        opts,
-        (error, response, data) => {
-          if (error) reject(error)
-          else resolve(data)
-        }
-      )
-    })
+    await Promise.all(
+      list.map(async (r) => {
+        const data = await new Promise((resolve, reject) => {
+          request(
+            encodeURI(`${kc.getCurrentCluster().server}/${r.api}`),
+            opts,
+            (error, response, data) => {
+              if (error) reject(error)
+              else resolve(data)
+            }
+          )
+        })
 
-    response.pkgs = yaml.load(pkgs)
+        try {
+          const payload = yaml.load(data)
+          if (payload.items && payload.items.length > 0) {
+            response.items = await Promise.all(
+              payload.items.map(async (x) => {
+                const info = {
+                  kind: x.kind,
+                  icon: packageConstants.icon,
+                  name: x.metadata.name,
+                  metadata: []
+                }
+                const url = x.metadata.annotations['metaUrl']
+                if (url) {
+                  const resp = await axios.get(url)
+                  const content = yaml.load(resp.data)
+                  info.description =
+                    content.metadata.annotations[
+                      'meta.crossplane.io/description'
+                    ]
+                  if (
+                    content.metadata.annotations['meta.crossplane.io/iconURI']
+                  ) {
+                    info.icon =
+                      content.metadata.annotations['meta.crossplane.io/iconURI']
+                  }
+
+                  const annotations = [
+                    'meta.crossplane.io/maintainer',
+                    'meta.crossplane.io/license',
+                    'meta.crossplane.io/source'
+                  ]
+
+                  annotations.forEach((key) => {
+                    if (content.metadata.annotations[key]) {
+                      info.metadata.push({
+                        label: key.replace('meta.crossplane.io/', ''),
+                        value: content.metadata.annotations[key]
+                      })
+                    }
+                  })
+                }
+                return info
+              })
+            )
+
+            // .map((x) => {
+            //   const data = {
+            //     kind: x.kind,
+            //     icon: packageConstants.icon,
+            //     name: x.metadata.name
+            //   }
+
+            //   const url = x.metadata.annotations['metaUrl']
+            //   if (url) {
+            //     //call
+            //     // packageConstants.icon
+            //   }
+            //   // .map((x) => {
+            //   //   return {
+            //   //     kind: x.kind,
+            //   //     apiVersion: x.apiVersion,
+            //   //     name: x.metadata.name
+            //   //   }
+            //   // })
+            //   return data
+            // })
+          }
+        } catch (err) {
+          logger.error(err)
+        }
+      })
+    )
 
     logger.debug(JSON.stringify(response))
 
