@@ -34,13 +34,16 @@ router.get('/packages', async (req, res, next) => {
 
     await Promise.all(
       list.map(async (r) => {
+        logger.debug(encodeURI(`${kc.getCurrentCluster().server}/${r.api}`))
         const data = await new Promise((resolve, reject) => {
           request(
             encodeURI(`${kc.getCurrentCluster().server}/${r.api}`),
             opts,
             (error, response, data) => {
-              if (error) reject(error)
-              else resolve(data)
+              if (error) {
+                logger.error(error)
+                reject(error)
+              } else resolve(data)
             }
           )
         })
@@ -112,7 +115,7 @@ router.get('/packages', async (req, res, next) => {
   }
 })
 
-router.get('/:selector', async (req, res, next) => {
+router.get('/resources/:selector', async (req, res, next) => {
   try {
     const selector = stringHelpers.b64toAscii(req.params.selector)
     logger.info(selector)
@@ -143,6 +146,13 @@ router.get('/:selector', async (req, res, next) => {
     await Promise.all(
       endpoints.map(async (r) => {
         const data = await new Promise((resolve, reject) => {
+          logger.debug(
+            encodeURI(
+              `${kc.getCurrentCluster().server}/${
+                r.api
+              }?labelSelector=${selector}`
+            )
+          )
           request(
             encodeURI(
               `${kc.getCurrentCluster().server}/${
@@ -151,8 +161,10 @@ router.get('/:selector', async (req, res, next) => {
             ),
             opts,
             (error, response, data) => {
-              if (error) reject(error)
-              else resolve(data)
+              if (error) {
+                logger.error(error)
+                reject(error)
+              } else resolve(data)
             }
           )
         })
