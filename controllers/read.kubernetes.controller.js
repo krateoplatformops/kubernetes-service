@@ -56,61 +56,44 @@ router.get('/packages', async (req, res, next) => {
                   name: x.metadata.name,
                   metadata: []
                 }
-                const url = x.metadata.annotations['metaUrl']
-                if (url) {
-                  const resp = await axios.get(url)
-                  const content = yaml.load(resp.data)
-                  info.description =
-                    content.metadata.annotations[
-                      'meta.crossplane.io/description'
-                    ]
-                  if (
-                    content.metadata.annotations['meta.crossplane.io/iconURI']
-                  ) {
-                    info.icon =
+
+                if (x?.metadata?.annotations['metaUrl']) {
+                  const url = x.metadata.annotations['metaUrl']
+                  if (url) {
+                    const resp = await axios.get(url)
+                    const content = yaml.load(resp.data)
+                    info.description =
+                      content.metadata.annotations[
+                        'meta.crossplane.io/description'
+                      ]
+                    if (
                       content.metadata.annotations['meta.crossplane.io/iconURI']
-                  }
-
-                  const annotations = [
-                    'meta.crossplane.io/maintainer',
-                    'meta.crossplane.io/license',
-                    'meta.crossplane.io/source'
-                  ]
-
-                  annotations.forEach((key) => {
-                    if (content.metadata.annotations[key]) {
-                      info.metadata.push({
-                        label: key.replace('meta.crossplane.io/', ''),
-                        value: content.metadata.annotations[key]
-                      })
+                    ) {
+                      info.icon =
+                        content.metadata.annotations[
+                          'meta.crossplane.io/iconURI'
+                        ]
                     }
-                  })
+
+                    const annotations = [
+                      'meta.crossplane.io/maintainer',
+                      'meta.crossplane.io/license',
+                      'meta.crossplane.io/source'
+                    ]
+
+                    annotations.forEach((key) => {
+                      if (content.metadata.annotations[key]) {
+                        info.metadata.push({
+                          label: key.replace('meta.crossplane.io/', ''),
+                          value: content.metadata.annotations[key]
+                        })
+                      }
+                    })
+                  }
                 }
                 return info
               })
             )
-
-            // .map((x) => {
-            //   const data = {
-            //     kind: x.kind,
-            //     icon: packageConstants.icon,
-            //     name: x.metadata.name
-            //   }
-
-            //   const url = x.metadata.annotations['metaUrl']
-            //   if (url) {
-            //     //call
-            //     // packageConstants.icon
-            //   }
-            //   // .map((x) => {
-            //   //   return {
-            //   //     kind: x.kind,
-            //   //     apiVersion: x.apiVersion,
-            //   //     name: x.metadata.name
-            //   //   }
-            //   // })
-            //   return data
-            // })
           }
         } catch (err) {
           logger.error(err)
