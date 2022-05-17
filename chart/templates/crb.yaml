@@ -14,3 +14,20 @@ subjects:
   - kind: ServiceAccount
     namespace: {{ .Release.Namespace }}
     name: {{ include "helm.serviceAccountName" . }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "helm.serviceAccountName" . }}-crossplane-rb
+  namespace: {{ .Release.Namespace  }}
+  labels:
+    app.kubernetes.io/name: {{ include "helm.serviceAccountName" . }}-crossplane-rb
+    app.kubernetes.io/component: control-plane
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "helm.serviceAccountName" . }}
+subjects:
+  - kind: ServiceAccount
+    namespace: {{ .Release.Namespace }}
+    name: {{ include "helm.serviceAccountName" . }}
