@@ -21,10 +21,10 @@ router.get('/packages', async (req, res, next) => {
     // CONFIGURATIONS   /apis/pkg.crossplane.io/v1/configurations
 
     const list = [
-      { key: 'packages', api: '/apis/pkg.crossplane.io/v1/providers' },
+      { key: 'packages', api: 'apis/pkg.crossplane.io/v1/providers' },
       {
         key: 'configurations',
-        api: '/apis/pkg.crossplane.io/v1/configurations'
+        api: 'apis/pkg.crossplane.io/v1/configurations'
       }
     ]
 
@@ -40,6 +40,7 @@ router.get('/packages', async (req, res, next) => {
             encodeURI(`${kc.getCurrentCluster().server}/${r.api}`),
             opts,
             (error, response, data) => {
+              logger.debug(JSON.stringify(response))
               if (error) {
                 logger.error(error)
                 reject(error)
@@ -53,6 +54,7 @@ router.get('/packages', async (req, res, next) => {
           if (payload.items && payload.items.length > 0) {
             response.items = await Promise.all(
               payload.items.map(async (x) => {
+                logger.debug(JSON.stringify(x))
                 const info = {
                   kind: x.kind,
                   icon: packageConstants.icon,
