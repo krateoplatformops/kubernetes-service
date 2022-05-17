@@ -57,7 +57,10 @@ router.get('/packages', async (req, res, next) => {
                   metadata: []
                 }
 
-                if (x?.metadata?.annotations['metaUrl']) {
+                if (
+                  x.metadata.annotations &&
+                  x.metadata.annotations['metaUrl']
+                ) {
                   const url = x.metadata.annotations['metaUrl']
                   if (url) {
                     const resp = await axios.get(url)
