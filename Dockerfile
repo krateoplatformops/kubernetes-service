@@ -1,6 +1,8 @@
 FROM bitnami/node
 LABEL maintainer "Krateo <contact@krateoplatformops.io>"
 
+ARG VERSION
+
 # Create app directory
 WORKDIR /usr/src/app
 
@@ -15,5 +17,7 @@ RUN npm ci --only=production
 
 # Bundle app source
 COPY . .
+
+RUN sed -i "s/VERSION/$VERSION/g" ./package.json
 
 CMD [ "node", "server.js" ]

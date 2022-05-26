@@ -1,6 +1,6 @@
 {
   "name": "kubernetes-service",
-  "version": "0.1.0",
+  "version": "VERSION",
   "description": "Krateo Kubernetes Service",
   "main": "server.js",
   "scripts": {

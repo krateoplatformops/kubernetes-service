@@ -7,7 +7,7 @@ const yaml = require('js-yaml')
 const stringHelpers = require('../helpers/string.helpers')
 const fs = require('fs')
 const { packageConstants } = require('../constants')
-const { default: axios } = require('axios')
+const axios = require('axios')
 
 router.get('/packages', async (req, res, next) => {
   try {
