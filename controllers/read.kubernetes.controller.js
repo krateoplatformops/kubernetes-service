@@ -59,7 +59,7 @@ router.get('/packages', async (req, res, next) => {
                   kind: x.kind,
                   icon: packageConstants.icon,
                   name: x.metadata.name,
-                  metadata: []
+                  version: x.spec.package.split(':')[1]
                 }
 
                 if (
@@ -91,10 +91,8 @@ router.get('/packages', async (req, res, next) => {
 
                     annotations.forEach((key) => {
                       if (content.metadata.annotations[key]) {
-                        info.metadata.push({
-                          label: key.replace('meta.crossplane.io/', ''),
-                          value: content.metadata.annotations[key]
-                        })
+                        info[key.replace('meta.crossplane.io/', '')] =
+                          content.metadata.annotations[key]
                       }
                     })
                   }
