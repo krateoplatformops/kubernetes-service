@@ -72,22 +72,22 @@
     },
     {
       "kind": "clusterrole",
-      "api": "rbac.authorization.k8s.io/v1/clusterroles",
+      "api": "apis/rbac.authorization.k8s.io/v1/clusterroles",
       "icon": "c-role"
     },
     {
       "kind": "clusterrolebinding",
-      "api": "rbac.authorization.k8s.io/v1/clusterrolebindings",
+      "api": "apis/rbac.authorization.k8s.io/v1/clusterrolebindings",
       "icon": "crb"
     },
     {
       "kind": "role",
-      "api": "rbac.authorization.k8s.io/v1/roles",
+      "api": "apis/rbac.authorization.k8s.io/v1/roles",
       "icon": "role"
     },
     {
       "kind": "rolebinding",
-      "api": "rbac.authorization.k8s.io/v1/rolebindings",
+      "api": "apis/rbac.authorization.k8s.io/v1/rolebindings",
       "icon": "rb"
     },
     {
