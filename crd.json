@@ -1,86 +1,94 @@
 {
   "resources": [
     {
-      "api": "apis/v1alpha1/templates.krateo.io",
+      "api": "apis/templates.krateo.io/v1alpha1/awsstack",
       "kind": "AwsStack",
       "icon": "crd"
     },
     {
-      "api": "/apis/v1beta1/aws.crossplane.io",
+      "api": "/apis/aws.crossplane.io/v1beta1/providerconfigs",
       "kind": "ProviderConfig",
       "icon": "crd"
     },
     {
-      "api": "apis/v1beta1/eks.aws.crossplane.io",
+      "api": "apis/eks.aws.crossplane.io/v1beta1/clusters",
       "kind": "Cluster",
       "icon": "crd"
     },
     {
-      "api": "apis/v1beta1/ec2.aws.crossplane.io",
+      "api": "apis/ec2.aws.crossplane.io/v1beta1/vpcs",
       "kind": "VPC",
       "icon": "crd"
     },
     {
-      "api": "apis/v1beta1/ec2.aws.crossplane.io",
+      "api": "apis/ec2.aws.crossplane.io/v1beta1/internetgateways",
       "kind": "InternetGateway",
       "icon": "crd"
     },
     {
-      "api": "apis/v1beta1/ec2.aws.crossplane.io",
+      "api": "apis/ec2.aws.crossplane.io/v1beta1/subnets",
       "kind": "Subnet",
       "icon": "crd"
     },
     {
-      "api": "apis/v1beta1/ec2.aws.crossplane.io",
+      "api": "apis/ec2.aws.crossplane.io/v1beta1/routetables",
       "kind": "RouteTable",
       "icon": "crd"
     },
     {
-      "api": "apis/v1alpha1/eks.aws.crossplane.io",
+      "api": "apis/eks.aws.crossplane.io/v1alpha1/nodegroups",
       "kind": "NodeGroup",
       "icon": "crd"
     },
     {
-      "api": "apis/v1beta1/database.aws.crossplane.io",
+      "api": "apis/database.aws.crossplane.io/v1beta1/rdsinstances",
       "kind": "RDSInstance",
       "icon": "crd"
     },
     {
-      "api": "apis/v1beta1/iam.aws.crossplane.io",
+      "api": "apis/iam.aws.crossplane.io/v1beta1/roles",
       "kind": "Role",
       "icon": "crd"
     },
     {
-      "api": "apis/v1beta1/iam.aws.crossplane.io",
+      "api": "apis/iam.aws.crossplane.io/v1beta1/rolepolicyattachments",
       "kind": "RolePolicyAttachment",
       "icon": "crd"
     },
     {
-      "api": "apis/v1alpha1/kubernetes.crossplane.io",
+      "api": "apis/kubernetes.crossplane.io/v1alpha1/providerconfigs",
       "kind": "ProviderConfig",
       "icon": "crd"
     },
     {
-      "api": "apis/v1alpha1/kubernetes.crossplane.io",
+      "api": "apis/kubernetes.crossplane.io/v1alpha1/objects",
       "kind": "Object",
       "icon": "crd"
     },
     {
-      "api": "apis/v1alpha1/argoproj.io",
+      "api": "apis/argoproj.io/v1alpha1/applications",
       "kind": "Application",
       "icon": "crd"
     },
     {
-      "api": "apis/v1alpha1/git.krateo.io",
+      "api": "apis/git.krateo.io/v1alpha1/providerconfigs",
       "kind": "ProviderConfig",
       "icon": "crd"
     },
-    { "api": "api/v1alpha1/git.krateo.io", "kind": "Repo", "icon": "crd" },
     {
-      "api": "api/v1alpha1/github.krateo.io/",
+      "api": "apis/git.krateo.io/v1alpha1/repoes",
+      "kind": "Repo",
+      "icon": "crd"
+    },
+    {
+      "api": "apis/github.krateo.io/v1alpha1/providerconfigs",
       "kind": "ProviderConfig",
       "icon": "crd"
     },
-    { "api": "apis/v1alpha1/github.krateo.io", "kind": "Repo", "icon": "crd" }
+    {
+      "api": "apis/github.krateo.io/v1alpha1/repoes",
+      "kind": "Repo",
+      "icon": "crd"
+    }
   ]
 }

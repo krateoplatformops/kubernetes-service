@@ -6,8 +6,6 @@ const request = require('request')
 const yaml = require('js-yaml')
 const stringHelpers = require('../helpers/string.helpers')
 const fs = require('fs')
-const { packageConstants } = require('../constants')
-const axios = require('axios')
 
 router.get('/resources/:selector', async (req, res, next) => {
   try {
@@ -55,6 +53,18 @@ router.get('/resources/:selector', async (req, res, next) => {
             ),
             opts,
             (error, response, data) => {
+              try {
+                if (response.statusCode != 200) {
+                  logger.error(
+                    `Not found ${encodeURI(
+                      `${kc.getCurrentCluster().server}/${
+                        r.api
+                      }?labelSelector=${selector}`
+                    )}`
+                  )
+                }
+              } catch {}
+
               if (error) {
                 logger.error(error)
                 reject(error)
@@ -72,6 +82,17 @@ router.get('/resources/:selector', async (req, res, next) => {
               items: payload.items
             })
           }
+          try {
+            if (payload.resources.length > 0) {
+              logger.error(
+                `Multiple resources found ${encodeURI(
+                  `${kc.getCurrentCluster().server}/${
+                    r.api
+                  }?labelSelector=${selector}`
+                )}`
+              )
+            }
+          } catch {}
         } catch (err) {
           logger.error(err)
         }
