@@ -1,3 +1,86 @@
 {
-  "resources": []
+  "resources": [
+    {
+      "api": "templates.krateo.io/v1alpha1",
+      "kind": "AwsStack",
+      "icon": "crd"
+    },
+    {
+      "api": "aws.crossplane.io/v1beta1",
+      "kind": "ProviderConfig",
+      "icon": "crd"
+    },
+    {
+      "api": "eks.aws.crossplane.io/v1beta1",
+      "kind": "Cluster",
+      "icon": "crd"
+    },
+    {
+      "api": "ec2.aws.crossplane.io/v1beta1",
+      "kind": "VPC",
+      "icon": "crd"
+    },
+    {
+      "api": "ec2.aws.crossplane.io/v1beta1",
+      "kind": "InternetGateway",
+      "icon": "crd"
+    },
+    {
+      "api": "ec2.aws.crossplane.io/v1beta1",
+      "kind": "Subnet",
+      "icon": "crd"
+    },
+    {
+      "api": "ec2.aws.crossplane.io/v1beta1",
+      "kind": "RouteTable",
+      "icon": "crd"
+    },
+    {
+      "api": "eks.aws.crossplane.io/v1alpha1",
+      "kind": "NodeGroup",
+      "icon": "crd"
+    },
+    {
+      "api": "database.aws.crossplane.io/v1beta1",
+      "kind": "RDSInstance",
+      "icon": "crd"
+    },
+    {
+      "api": "iam.aws.crossplane.io/v1beta1",
+      "kind": "Role",
+      "icon": "crd"
+    },
+    {
+      "api": "iam.aws.crossplane.io/v1beta1",
+      "kind": "RolePolicyAttachment",
+      "icon": "crd"
+    },
+    {
+      "api": "kubernetes.crossplane.io/v1alpha1",
+      "kind": "ProviderConfig",
+      "icon": "crd"
+    },
+    {
+      "api": "kubernetes.crossplane.io/v1alpha1",
+      "kind": "Object",
+      "icon": "crd"
+    },
+    {
+      "api": "argoproj.io/v1alpha1",
+      "kind": "Application",
+      "icon": "crd"
+    },
+    {
+      "api": "git.krateo.io/v1alpha1",
+      "kind": "ProviderConfig",
+      "icon": "crd"
+    },
+    { "api": "git.krateo.io/v1alpha1", "kind": "Repo", "icon": "crd" },
+    {
+      "api": "github.krateo.io/v1alpha1",
+      "kind": "ProviderConfig",
+      "icon": "crd"
+    },
+    { "api": "github.krateo.io/v1alpha1", "kind": "Repo", "icon": "crd" }
+  ]
 }
