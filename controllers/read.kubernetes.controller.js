@@ -7,7 +7,7 @@ const yaml = require('js-yaml')
 const stringHelpers = require('../helpers/string.helpers')
 const fs = require('fs')
 
-router.get('/resources/:selector', async (req, res, next) => {
+router.get('/resources/:selector/:params?', async (req, res, next) => {
   try {
     const selector = stringHelpers.b64toAscii(req.params.selector)
     logger.info(selector)
@@ -27,6 +27,20 @@ router.get('/resources/:selector', async (req, res, next) => {
       endpoints = endpoints.concat(JSON.parse(crdJson).resources)
     } catch (err) {
       logger.error(err)
+    }
+    // plugin params
+    if (req.params.params) {
+      const p = JSON.parse(stringHelpers.b64toAscii(req.params.params))
+      p.forEach((x) => {
+        if (!x.icon) {
+          x.icon = 'crd'
+        }
+        if (!endpoints.find((y) => y.api === x.api)) {
+          endpoints.push(x)
+        } else {
+          endpoints = endpoints.map((y) => (y.api === x.api ? x : y))
+        }
+      })
     }
 
     logger.debug(JSON.stringify(endpoints))
@@ -55,7 +69,7 @@ router.get('/resources/:selector', async (req, res, next) => {
             (error, response, data) => {
               try {
                 if (response.statusCode != 200) {
-                  logger.error(
+                  logger.warn(
                     `Not found ${encodeURI(
                       `${kc.getCurrentCluster().server}/${
                         r.api
@@ -84,7 +98,7 @@ router.get('/resources/:selector', async (req, res, next) => {
           }
           try {
             if (payload.resources.length > 0) {
-              logger.error(
+              logger.warn(
                 `Multiple resources found ${encodeURI(
                   `${kc.getCurrentCluster().server}/${
                     r.api
