@@ -7,9 +7,9 @@ const yaml = require('js-yaml')
 const stringHelpers = require('../helpers/string.helpers')
 const fs = require('fs')
 
-router.get('/resources/:selector/:params?', async (req, res, next) => {
+router.get('/:selector/:params?', async (req, res, next) => {
   try {
-    const selector = stringHelpers.b64toAscii(req.params.selector)
+    const selector = req.params.selector
     logger.info(selector)
 
     const kc = new k8s.KubeConfig()
@@ -46,7 +46,7 @@ router.get('/resources/:selector/:params?', async (req, res, next) => {
     logger.debug(JSON.stringify(endpoints))
 
     const response = {
-      resources: []
+      list: []
     }
 
     await Promise.all(
@@ -90,7 +90,7 @@ router.get('/resources/:selector/:params?', async (req, res, next) => {
         try {
           const payload = yaml.load(data)
           if (payload.items && payload.items.length > 0) {
-            response.resources.push({
+            response.list.push({
               kind: r.kind,
               icon: r.icon,
               items: payload.items
@@ -113,7 +113,7 @@ router.get('/resources/:selector/:params?', async (req, res, next) => {
       })
     )
 
-    response.resources = response.resources.sort((a, b) => {
+    response.list = response.list.sort((a, b) => {
       if (a.kind < b.kind) return -1
       if (a.kind > b.kind) return 1
       return 0
