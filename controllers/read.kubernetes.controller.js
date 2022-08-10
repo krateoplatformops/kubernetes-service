@@ -4,7 +4,6 @@ const { logger } = require('../helpers/logger.helpers')
 const k8s = require('@kubernetes/client-node')
 const request = require('request')
 const yaml = require('js-yaml')
-const stringHelpers = require('../helpers/string.helpers')
 const fs = require('fs')
 
 router.get('/:selector/:params?', async (req, res, next) => {
@@ -30,7 +29,7 @@ router.get('/:selector/:params?', async (req, res, next) => {
     }
     // plugin params
     if (req.params.params) {
-      const p = JSON.parse(stringHelpers.b64toAscii(req.params.params))
+      const p = JSON.parse(req.params.params)
       p.forEach((x) => {
         if (!x.icon) {
           x.icon = 'crd'
@@ -52,39 +51,30 @@ router.get('/:selector/:params?', async (req, res, next) => {
     await Promise.all(
       endpoints.map(async (r) => {
         const data = await new Promise((resolve, reject) => {
-          logger.debug(
-            encodeURI(
-              `${kc.getCurrentCluster().server}/${
-                r.api
-              }?labelSelector=${selector}`
-            )
+          let url = encodeURI(
+            `${kc.getCurrentCluster().server}/${
+              r.api
+            }?labelSelector=${selector}`
           )
-          request(
-            encodeURI(
-              `${kc.getCurrentCluster().server}/${
-                r.api
-              }?labelSelector=${selector}`
-            ),
-            opts,
-            (error, response, data) => {
-              try {
-                if (response.statusCode != 200) {
-                  logger.warn(
-                    `Not found ${encodeURI(
-                      `${kc.getCurrentCluster().server}/${
-                        r.api
-                      }?labelSelector=${selector}`
-                    )}`
-                  )
-                }
-              } catch {}
+          logger.debug(url)
+          request(url, opts, (error, response, data) => {
+            try {
+              if (response.statusCode != 200) {
+                logger.warn(
+                  `Not found ${encodeURI(
+                    `${kc.getCurrentCluster().server}/${
+                      r.api
+                    }?labelSelector=${selector}`
+                  )}`
+                )
+              }
+            } catch {}
 
-              if (error) {
-                logger.error(error)
-                reject(error)
-              } else resolve(data)
-            }
-          )
+            if (error) {
+              logger.error(error)
+              reject(error)
+            } else resolve(data)
+          })
         })
 
         try {
@@ -98,13 +88,7 @@ router.get('/:selector/:params?', async (req, res, next) => {
           }
           try {
             if (payload.resources.length > 0) {
-              logger.warn(
-                `Multiple resources found ${encodeURI(
-                  `${kc.getCurrentCluster().server}/${
-                    r.api
-                  }?labelSelector=${selector}`
-                )}`
-              )
+              logger.warn(`Multiple resources found ${url}`)
             }
           } catch {}
         } catch (err) {
