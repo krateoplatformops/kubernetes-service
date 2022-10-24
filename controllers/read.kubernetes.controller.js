@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { logger } = require('../helpers/logger.helpers')
+const logger = require('../service-library/helpers/logger.helpers')
 const k8s = require('@kubernetes/client-node')
 const request = require('request')
 const yaml = require('js-yaml')
@@ -50,8 +50,9 @@ router.get('/:selector/:params?', async (req, res, next) => {
 
     await Promise.all(
       endpoints.map(async (r) => {
+        let url
         const data = await new Promise((resolve, reject) => {
-          let url = encodeURI(
+          url = encodeURI(
             `${kc.getCurrentCluster().server}/${
               r.api
             }?labelSelector=${selector}`
@@ -59,7 +60,7 @@ router.get('/:selector/:params?', async (req, res, next) => {
           logger.debug(url)
           request(url, opts, (error, response, data) => {
             try {
-              if (response.statusCode != 200) {
+              if (response.statusCode !== 200) {
                 logger.warn(
                   `Not found ${encodeURI(
                     `${kc.getCurrentCluster().server}/${
